@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    background-color: #2e2e2e;
+    text-align: center;;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    padding: 5;
+    color: greenyellow;
+    font-size: 20px;
+    height: 30px;
+    font-weight: bolder;
+    
+}

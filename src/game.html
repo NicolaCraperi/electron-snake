@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Snake</title>
+        <link rel="stylesheet" href="style.css">
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    </head>
+    <body>
+        <div class="container"><div>CURRENT SCORE:</div><div id="score">0</div></div>
+        <div class="container"><div>BEST SCORE:</div><div id="bestscore">0</div></div>
+        <canvas class="canvas" id="gc" width="625" height="625"></canvas>
+    </body>
+    <script>
+        var currentBestScore = 0;    
+        var score = document.getElementById("score");
+        var bestScore = document.getElementById("bestscore");
+        
+        window.onload=function() {
+            canv=document.getElementById("gc");
+            ctx=canv.getContext("2d");
+            document.addEventListener("keydown",keyPush);
+            setInterval(game,1000/15);
+        }
+        currentPointX=currentPointY=10;
+        blockbodySize=maximumPoint=25;
+        targetPointX=targetPointY=15;
+        XAsisIncrase=YAsisIncrase=0;
+        body=[];
+        tail = 5;
+        
+        function game() {
+        
+            currentPointX+=XAsisIncrase;
+            currentPointY+=YAsisIncrase;
+        
+            if(currentPointX<0) {
+                currentPointX= maximumPoint-1;
+            }
+            if(currentPointX>maximumPoint-1) {
+                currentPointX= 0;
+            }
+            if(currentPointY<0) {
+                currentPointY= maximumPoint-1;
+            }
+            if(currentPointY>maximumPoint-1) {
+                currentPointY= 0;
+            }
+        
+            ctx.fillStyle="black";
+            ctx.fillRect(0,0,canv.width,canv.height);
+        
+        
+            //draw body
+            ctx.fillStyle="red";
+            for(var i=0;i<body.length;i++) {
+                ctx.fillRect(body[i].x*blockbodySize + 1,body[i].y*blockbodySize +1 ,blockbodySize-2,blockbodySize-2);
+                if(body[i].x==currentPointX && body[i].y==currentPointY) {
+                    tail = 5;
+                    score.innerHTML = 0
+        
+                }
+            }
+        
+            body.push({x:currentPointX,y:currentPointY});
+        
+            while(body.length>tail) {
+                body.shift();
+            }
+        
+            if(targetPointX==currentPointX && targetPointY==currentPointY) {
+                tail++;
+                if(tail - 5 > currentBestScore){
+                    bestscore.innerHTML = tail - 5; 
+                    currentBestScore = tail -5;
+                }
+                score.innerHTML = tail - 5
+                targetPointX=Math.floor(Math.random()*maximumPoint);
+                targetPointY=Math.floor(Math.random()*maximumPoint);
+            }
+            ctx.fillStyle="yellow";
+            ctx.fillRect(targetPointX*blockbodySize + 1,targetPointY*blockbodySize + 1,blockbodySize-2,blockbodySize-2);
+        }
+        
+        const keyPush = (evt) => {
+            switch(evt.keyCode) {
+                case 37:
+                    XAsisIncrase=-1;YAsisIncrase=0;
+                    break;
+                case 38:
+                    XAsisIncrase=0;YAsisIncrase=-1;
+                    break;
+                case 39:
+                    XAsisIncrase=1;YAsisIncrase=0;
+                    break;
+                case 40:
+                    XAsisIncrase=0;YAsisIncrase=1;
+                    break;
+            }
+        }
+    </script> 
+</html>
